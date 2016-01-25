@@ -5,15 +5,20 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "start:dev": "node index.js 4000",
     "lint": "jshint .",
     "pretest": "npm run lint",
     "test": "mocha tests -u bdd -R spec",
     "prebuild": "npm run build:clean && npm run create-public-dirs",
-    "build": "npm run build:sass && npm run build:bundle",
+    "build": "npm run build:sass && npm run build:bundle && npm run copy:views",
     "build:clean": "rimraf public/*",
     "build:sass": "node-sass ./src/scss/main.scss -o ./public/css",
     "build:bundle": "browserify ./src/app.ts -p tsify | uglifyjs -mc > ./public/js/bundle.js",
+    "copy:views": "xcopy \"src/views\" public /s /e /y /i",
+    "watch:bundle": "watchify ./src/app.ts -p tsify -o ./public/js/bundle.js -dv",
+    "watch:folder": "watch \"npm run build\" src",
+    "watch:browser": "live-reload --port 9091 public/",
+    "watch:server": "nodemon --ignore public --ignore src index.js",
+    "watch": "npm run watch:server && START /b \"npm run watch:browser\"",
     "create-public-dirs": "mkdir \"public/js\" && mkdir \"public/css\""
   },
   "keywords": [],
@@ -25,6 +30,7 @@
   "devDependencies": {
     "browserify": "^13.0.0",
     "jshint": "^2.9.1",
+    "live-reload": "^1.1.0",
     "mocha": "^2.3.4",
     "node-sass": "^3.4.2",
     "rimraf": "^2.5.0",
@@ -32,6 +38,8 @@
     "supertest": "^1.1.0",
     "tsify": "^0.13.2",
     "typescript": "^1.7.5",
-    "uglifyjs": "^2.4.10"
+    "uglifyjs": "^2.4.10",
+    "watch": "^0.17.1",
+    "watchify": "^3.7.0"
   }
 }
