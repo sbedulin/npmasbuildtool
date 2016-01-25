@@ -4,11 +4,12 @@
         "noImplicitAny": true,
         "removeComments": true,
         "preserveConstEnums": true,
-        "outDir": "client",
+        "outDir": "tmp",
         "sourceMap": true
     },
     "exclude": [
         "node_modules",
-        "client"
+        "public",
+        "tmp"
     ]
 }

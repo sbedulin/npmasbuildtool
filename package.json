@@ -6,14 +6,15 @@
   "scripts": {
     "start": "node index.js",
     "start:dev": "node index.js 4000",
+    "lint": "jshint .",
     "pretest": "npm run lint",
     "test": "mocha tests -u bdd -R spec",
-    "lint": "jshint .",
-    "precompile": "npm run clean",
-    "compile": "npm run compile:ts && npm run buld:sass",
-    "compile:ts": "tsc",
-    "clean": "rimraf client/*",
-    "buld:sass": "node-sass ./src/scss/main.scss -o ./client"
+    "prebuild": "npm run build:clean && npm run create-public-dirs",
+    "build": "npm run build:sass && npm run build:bundle",
+    "build:clean": "rimraf public/*",
+    "build:sass": "node-sass ./src/scss/main.scss -o ./public/css",
+    "build:bundle": "browserify ./src/app.ts -p tsify | uglifyjs -mc > ./public/js/bundle.js",
+    "create-public-dirs": "mkdir \"public/js\" && mkdir \"public/css\""
   },
   "keywords": [],
   "author": "",
@@ -22,12 +23,15 @@
     "koa": "^1.1.2"
   },
   "devDependencies": {
+    "browserify": "^13.0.0",
     "jshint": "^2.9.1",
     "mocha": "^2.3.4",
     "node-sass": "^3.4.2",
     "rimraf": "^2.5.0",
     "should": "^8.1.1",
     "supertest": "^1.1.0",
-    "typescript": "^1.7.5"
+    "tsify": "^0.13.2",
+    "typescript": "^1.7.5",
+    "uglifyjs": "^2.4.10"
   }
 }
